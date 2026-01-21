@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { TrendingUp, TrendingDown } from 'lucide-react'
+import { fetcher } from '@/lib/coingecko.actions'
 
 const columns: DataTableColumn<TrendingCoin>[] = [
   { 
@@ -39,7 +40,11 @@ const columns: DataTableColumn<TrendingCoin>[] = [
     { header: "Price", cellClassName: "price-cell", cell: (coin) => coin.item.data.price },
 ]
 
-const page = () => {
+const page = async () => {
+  const coin = await fetcher<CoinDetailsData>('/coins/bitcoin', {
+    dex_pair_format: "symbol"
+  })
+  
   return (
     <main className='main-container'>
       <section className='home-grid'>
